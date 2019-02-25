@@ -21,8 +21,8 @@ public class Implement extends MagineerCard {
 
     public static final String IMG = makeCardPath("Skill.png");
 
-    public static final String NAME = cardStrings.NAME;
-    public static final String DESCRIPTION = cardStrings.DESCRIPTION;
+    public static final String NAME = "Implement"; //cardStrings.NAME;
+    public static final String DESCRIPTION = "-"; //cardStrings.DESCRIPTION;
     public static final String portraitFilename = "implement.png";
 
     // /TEXT DECLARATION/
@@ -50,6 +50,7 @@ public class Implement extends MagineerCard {
         this.tags.add(BaseModCardTags.BASIC_DEFEND);
         cardArtLayers512.add(new RenderLayer(TextureLoader.getTexture(cardArt512+portraitFilename)));
         cardArtLayers1024.add(new RenderLayer(TextureLoader.getTexture(cardArt1024+portraitFilename)));
+
     }
 
     @Override

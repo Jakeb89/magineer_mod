@@ -9,6 +9,7 @@ import com.megacrit.cardcrawl.localization.CardStrings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import hexui_lib.util.RenderLayer;
 import magineer.MagineerMod;
+import magineer.actions.ImproveCardAction;
 import magineer.characters.Magineer;
 import magineer.util.TextureLoader;
 
@@ -23,8 +24,8 @@ public class MagineerDefend extends MagineerCard {
 
     public static final String IMG = makeCardPath("Skill.png");
 
-    public static final String NAME = cardStrings.NAME;
-    public static final String DESCRIPTION = cardStrings.DESCRIPTION;
+    public static final String NAME = "Defend"; //cardStrings.NAME;
+    public static final String DESCRIPTION = "Gain !B! Block."; //cardStrings.DESCRIPTION;
     public static final String portraitFilename = "magineer_defend.png";
 
     // /TEXT DECLARATION/
@@ -52,11 +53,18 @@ public class MagineerDefend extends MagineerCard {
         this.tags.add(BaseModCardTags.BASIC_DEFEND);
         cardArtLayers512.add(new RenderLayer(TextureLoader.getTexture(cardArt512+portraitFilename)));
         cardArtLayers1024.add(new RenderLayer(TextureLoader.getTexture(cardArt1024+portraitFilename)));
+
+        improvementSlots.add(SLOTTYPE.GRAY);
+        improvementSlots.add(SLOTTYPE.GRAY);
+        improvementSlots.add(SLOTTYPE.GRAY);
+        improvementSlots.add(SLOTTYPE.BLUE);
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
         AbstractDungeon.actionManager.addToBottom(new GainBlockAction(p, p, block));
+        AbstractDungeon.actionManager.addToBottom(
+                new ImproveCardAction(this, 1));
     }
 
     @Override

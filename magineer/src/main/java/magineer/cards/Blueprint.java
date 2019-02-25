@@ -23,8 +23,8 @@ public class Blueprint extends MagineerCard {
 
     public static final String IMG = makeCardPath("Skill.png");
 
-    public static final String NAME = cardStrings.NAME;
-    public static final String DESCRIPTION = cardStrings.DESCRIPTION;
+    public static final String NAME = "Blueprint"; //cardStrings.NAME;
+    public static final String DESCRIPTION = "Gain !B! Block. NL Add !M! magineer:Progress to a random card in your hand. Exhaust."; //cardStrings.DESCRIPTION;
     public static final String portraitFilename = "blueprint.png";
 
     // /TEXT DECLARATION/
@@ -40,6 +40,8 @@ public class Blueprint extends MagineerCard {
     private static final int COST = 1;
     private static final int BLOCK = 5;
     private static final int UPGRADE_PLUS_BLOCK = 3;
+    private static final int MAGIC = 3;
+    private static final int UPGRADE_PLUS_MAGIC = 2;
 
 
     // /STAT DECLARATION/
@@ -48,6 +50,7 @@ public class Blueprint extends MagineerCard {
     public Blueprint() {
         super(ID, NAME, IMG, COST, DESCRIPTION, TYPE, COLOR, RARITY, TARGET);
         baseBlock = BLOCK;
+        magicNumber = baseMagicNumber = MAGIC;
 
         this.tags.add(BaseModCardTags.BASIC_DEFEND);
         cardArtLayers512.add(new RenderLayer(TextureLoader.getTexture(cardArt512+portraitFilename)));
@@ -64,6 +67,7 @@ public class Blueprint extends MagineerCard {
         if (!upgraded) {
             upgradeName();
             upgradeBlock(UPGRADE_PLUS_BLOCK);
+            upgradeMagicNumber(UPGRADE_PLUS_MAGIC);
             initializeDescription();
         }
     }

@@ -24,12 +24,24 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
     public boolean upgradedDefaultSecondMagicNumber; // A boolean to check whether the number has been upgraded or not.
     public boolean isDefaultSecondMagicNumberModified; // A boolean to check whether the number has been modified or not, for coloring purposes. (red/green)
 
+    public static ArrayList<RenderLayer> outerCircuits512 = new ArrayList<RenderLayer>();
+    public static ArrayList<RenderLayer> outerCircuits1024 = new ArrayList<RenderLayer>();
+    public static ArrayList<RenderLayer> outerMagic512 = new ArrayList<RenderLayer>();
+    public static ArrayList<RenderLayer> outerMagic1024 = new ArrayList<RenderLayer>();
 
-    private ArrayList<RenderLayer> portraitLayers512 = new ArrayList<RenderLayer>();
-    private ArrayList<RenderLayer> portraitLayers1024 = new ArrayList<RenderLayer>();
+    public static ArrayList<RenderLayer> slotBlue512 = new ArrayList<RenderLayer>();
+    public static ArrayList<RenderLayer> slotBlue1024 = new ArrayList<RenderLayer>();
+    public static ArrayList<RenderLayer> slotOrange512 = new ArrayList<RenderLayer>();
+    public static ArrayList<RenderLayer> slotOrange1024 = new ArrayList<RenderLayer>();
+    public static ArrayList<RenderLayer> slotGray512 = new ArrayList<RenderLayer>();
+    public static ArrayList<RenderLayer> slotGray1024 = new ArrayList<RenderLayer>();
+    public static ArrayList<RenderLayer> slotGlow512 = new ArrayList<RenderLayer>();
+    public static ArrayList<RenderLayer> slotGlow1024 = new ArrayList<RenderLayer>();
 
-    public ArrayList<RenderLayer> cardArtLayers512 = new ArrayList<RenderLayer>();
-    public ArrayList<RenderLayer> cardArtLayers1024 = new ArrayList<RenderLayer>();
+    public static RenderLayer improvementSlotsPanel512;
+    public static RenderLayer improvementSlotsPanel1024;
+
+    public static boolean decoRenderLayersInitialized = false;
 
     public static final String images512 = "magineerResources/images/512/";
     public static final String images1024 = "magineerResources/images/1024/";
@@ -47,6 +59,31 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
     public static final String skillBorder = "bg_skill_fullportait_gray.png";
     public static final String powerBorder = "bg_power_fullportait_gray.png";
 
+    private ArrayList<RenderLayer> portraitLayers512 = new ArrayList<RenderLayer>();
+    private ArrayList<RenderLayer> portraitLayers1024 = new ArrayList<RenderLayer>();
+
+    public ArrayList<RenderLayer> cardArtLayers512 = new ArrayList<RenderLayer>();
+    public ArrayList<RenderLayer> cardArtLayers1024 = new ArrayList<RenderLayer>();
+
+    public void addImprovements(int amount) {
+        improvements += amount;
+        if(improvements > improvementSlots.size()){
+            improvements = improvementSlots.size();
+        }
+        if(improvements < 0){
+            improvements = 0;
+        }
+    }
+
+    public enum SLOTTYPE{
+        GRAY,
+        ORANGE,
+        BLUE
+    }
+
+    public ArrayList<SLOTTYPE> improvementSlots = new ArrayList<SLOTTYPE>();
+    public int improvements = 0;
+
     public MagineerCard(final String id, final String name, final String img, final int cost, final String rawDescription,
                         final CardType type, final CardColor color,
                         final CardRarity rarity, final CardTarget target) {
@@ -60,6 +97,8 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
         isMagicNumberModified = false;
         isDefaultSecondMagicNumberModified = false;
 
+        initializeDecoRenderLayers();
+
 
         setBackgroundTexture(images512+"bg_genericback_fullportrait_gray.png",
                 images1024+"bg_genericback_fullportrait_gray.png");
@@ -68,6 +107,36 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
         /*setBannerTexture(images512+"empty.png",
                 images1024+"empty.png");*/
 
+    }
+
+    private void initializeDecoRenderLayers() {
+        if(decoRenderLayersInitialized) return;
+
+        for(int i=1; i<=3; i++) {
+            outerCircuits512.add(new RenderLayer(TextureLoader.getTexture(images512 + "bg_circuits_outer_"+i+".png")));
+            outerMagic512   .add(new RenderLayer(TextureLoader.getTexture(images512 + "bg_magic_outer_"+i+".png")));
+
+            outerCircuits1024.add(new RenderLayer(TextureLoader.getTexture(images1024 + "bg_circuits_outer_"+i+".png")));
+            outerMagic1024   .add(new RenderLayer(TextureLoader.getTexture(images1024 + "bg_magic_outer_"+i+".png")));
+        }
+
+        for(int i=0; i<=6; i++) {
+            slotBlue512   .add(new RenderLayer(TextureLoader.getTexture(images512 + "slot_blue_"+i+".png")));
+            slotOrange512 .add(new RenderLayer(TextureLoader.getTexture(images512 + "slot_orange_"+i+".png")));
+            slotGray512   .add(new RenderLayer(TextureLoader.getTexture(images512 + "slot_gray_"+i+".png")));
+            slotGlow512   .add(new RenderLayer(TextureLoader.getTexture(images512 + "slot_glow_"+i+".png"), null, RenderLayer.BLENDMODE.SCREEN));
+
+            slotBlue1024  .add(new RenderLayer(TextureLoader.getTexture(images1024 + "slot_blue_"+i+".png")));
+            slotOrange1024.add(new RenderLayer(TextureLoader.getTexture(images1024 + "slot_orange_"+i+".png")));
+            slotGray1024  .add(new RenderLayer(TextureLoader.getTexture(images1024 + "slot_gray_"+i+".png")));
+            slotGlow1024  .add(new RenderLayer(TextureLoader.getTexture(images1024 + "slot_glow_"+i+".png"), null, RenderLayer.BLENDMODE.SCREEN));
+        }
+
+        improvementSlotsPanel512  = new RenderLayer(TextureLoader.getTexture(images512  + "improvement_slots_panel.png"));
+        improvementSlotsPanel1024 = new RenderLayer(TextureLoader.getTexture(images1024 + "improvement_slots_panel.png"));
+
+
+        decoRenderLayersInitialized = true;
     }
 
     public void displayUpgrades() { // Display the upgrade - when you click a card to upgrade it
@@ -90,12 +159,13 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
         portraitLayers512.clear();
 
         portraitLayers512.add(new RenderLayer(TextureLoader.getTexture(images512+solidBack)));
-        portraitLayers512.add(new RenderLayer(TextureLoader.getTexture(images512+descShadow)));
 
         addCardArtLayers512(portraitLayers512);
 
+        portraitLayers512.add(new RenderLayer(TextureLoader.getTexture(images512+descShadow)));
         portraitLayers512.add(new RenderLayer(TextureLoader.getTexture(images512+cardTypePanel)));
         portraitLayers512.add(new RenderLayer(TextureLoader.getTexture(images512+innerShadow)));
+        portraitLayers512.add(improvementSlotsPanel512);
 
         switch(this.type){
             case ATTACK:
@@ -109,6 +179,18 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
                 portraitLayers512.add(new RenderLayer(TextureLoader.getTexture(images512+skillBorder)));
         }
 
+        for(int i=0; i<improvementSlots.size(); i++){
+            switch(improvementSlots.get(i)){
+                case GRAY:   portraitLayers512.add(slotGray512.get(i));   break;
+                case ORANGE: portraitLayers512.add(slotOrange512.get(i)); break;
+                case BLUE:   portraitLayers512.add(slotBlue512.get(i));   break;
+            }
+        }
+
+        for(int i=0; i<improvements; i++){
+            portraitLayers512.add(slotGlow512.get(i));   break;
+        }
+
         return portraitLayers512;
     }
 
@@ -117,12 +199,13 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
         portraitLayers1024.clear();
 
         portraitLayers1024.add(new RenderLayer(TextureLoader.getTexture(images1024+solidBack)));
+
+        addCardArtLayers1024(portraitLayers1024);
+
         portraitLayers1024.add(new RenderLayer(TextureLoader.getTexture(images1024+descShadow)));
-
-        addCardArtLayers512(portraitLayers1024);
-
         portraitLayers1024.add(new RenderLayer(TextureLoader.getTexture(images1024+cardTypePanel)));
         portraitLayers1024.add(new RenderLayer(TextureLoader.getTexture(images1024+innerShadow)));
+        portraitLayers1024.add(improvementSlotsPanel1024);
 
         switch(this.type){
             case ATTACK:
@@ -134,6 +217,18 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
             case SKILL:
             default:
                 portraitLayers1024.add(new RenderLayer(TextureLoader.getTexture(images1024+skillBorder)));
+        }
+
+        for(int i=0; i<improvementSlots.size(); i++){
+            switch(improvementSlots.get(i)){
+                case GRAY:   portraitLayers1024.add(slotGray1024.get(i));   break;
+                case ORANGE: portraitLayers1024.add(slotOrange1024.get(i)); break;
+                case BLUE:   portraitLayers1024.add(slotBlue1024.get(i));   break;
+            }
+        }
+
+        for(int i=0; i<improvements; i++){
+            portraitLayers1024.add(slotGlow1024.get(i));   break;
         }
 
         return portraitLayers1024;

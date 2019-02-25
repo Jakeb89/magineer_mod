@@ -48,7 +48,7 @@ public class Magineer extends CustomPlayer {
 
     public static class Enums {
         @SpireEnum
-        public static AbstractPlayer.PlayerClass THE_DEFAULT;
+        public static AbstractPlayer.PlayerClass MAGINEER;
         @SpireEnum(name = "DEFAULT_GRAY_COLOR") // These two HAVE to have the same absolutely identical name.
         public static AbstractCard.CardColor COLOR_GRAY;
         @SpireEnum(name = "DEFAULT_GRAY_COLOR") @SuppressWarnings("unused")
@@ -73,9 +73,15 @@ public class Magineer extends CustomPlayer {
     // =============== STRINGS =================
 
     private static final String ID = makeID("Magineer");
-    private static final CharacterStrings characterStrings = CardCrawlGame.languagePack.getCharacterString(ID);
-    private static final String[] NAMES = characterStrings.NAMES;
-    private static final String[] TEXT = characterStrings.TEXT;
+
+    private static final CharacterStrings characterStrings = CardCrawlGame.languagePack.getCharacterString("magineer:Magineer");
+    private static final String[] NAMES = {"Magineer", "magineer"}; //characterStrings.NAMES;
+    private static final String[] TEXT = {"Magineer description text.",
+            "NL Magineer description heart text.",
+            "Navigating an unlit street, you come across several hooded figures in the midst of some dark ritual. " +
+                    "As you approach, they turn to you in eerie unison. The tallest among them bares fanged teeth and " +
+                    "extends a long, pale hand towards you. NL ~\"Join~ ~us~ ~basic~ ~one,~ ~and~ ~feel~ ~the~ ~warmth~ " +
+                    "~of~ ~the~ ~Spire.\"~"}; //characterStrings.TEXT;
 
     // =============== /STRINGS/ =================
 

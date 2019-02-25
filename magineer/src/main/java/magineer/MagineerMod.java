@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.evacipated.cardcrawl.mod.stslib.Keyword;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.Gson;
-import com.megacrit.cardcrawl.dungeons.TheCity;
 import com.megacrit.cardcrawl.helpers.CardHelper;
 import com.megacrit.cardcrawl.localization.*;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
@@ -20,7 +19,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import magineer.cards.*;
 import magineer.characters.Magineer;
-import magineer.events.IdentityCrisisEvent;
 import magineer.potions.PlaceholderPotion;
 import magineer.relics.BottledPlaceholderRelic;
 import magineer.relics.DefaultClickableRelic;
@@ -65,7 +63,7 @@ public class MagineerMod implements
     private static String modID;
 
     //This is for the in-game mod settings panel.
-    private static final String MODNAME = "Magineer Mod";
+    private static final String MODNAME = "MagineerMod";
     private static final String AUTHOR = "Hexblue"; // And pretty soon - You!
     private static final String DESCRIPTION = "A base for Slay the Spire to start your own mod from, feat. the Default.";
 
@@ -94,8 +92,8 @@ public class MagineerMod implements
     private static final String ENERGY_ORB_DEFAULT_GRAY_PORTRAIT = "magineerResources/images/1024/card_default_gray_orb.png";
 
     // Character assets
-    private static final String THE_DEFAULT_BUTTON = "magineerResources/images/charSelect/DefaultCharacterButton.png";
-    private static final String THE_DEFAULT_PORTRAIT = "magineerResources/images/charSelect/DefaultCharacterPortraitBG.png";
+    private static final String MAGINEER_BUTTON = "magineerResources/images/charSelect/DefaultCharacterButton.png";
+    private static final String MAGINEER_PORTRAIT = "magineerResources/images/charSelect/DefaultCharacterPortraitBG.png";
     public static final String THE_DEFAULT_SHOULDER_1 = "magineerResources/images/char/defaultCharacter/shoulder.png";
     public static final String THE_DEFAULT_SHOULDER_2 = "magineerResources/images/char/defaultCharacter/shoulder2.png";
     public static final String THE_DEFAULT_CORPSE = "magineerResources/images/char/defaultCharacter/corpse.png";
@@ -174,7 +172,8 @@ public class MagineerMod implements
     } // NO
 
     public static String getModID() {
-        return modID;
+        //return modID;
+        return "magineer";
     }
 
     private static void pathCheck() {
@@ -195,7 +194,7 @@ public class MagineerMod implements
     @SuppressWarnings("unused")
     public static void initialize() {
         logger.info("========================= Initializing Default Mod. Hi. =========================");
-        MagineerMod defaultmod = new MagineerMod();
+        MagineerMod magineerMod = new MagineerMod();
         logger.info("========================= /Default Mod Initialized. Hello World./ =========================");
     }
 
@@ -206,13 +205,13 @@ public class MagineerMod implements
 
     @Override
     public void receiveEditCharacters() {
-        logger.info("Beginning to edit characters. " + "Add " + Magineer.Enums.THE_DEFAULT.toString());
+        logger.info("Beginning to edit characters. " + "Add " + Magineer.Enums.MAGINEER.toString());
 
-        BaseMod.addCharacter(new Magineer("the Default", Magineer.Enums.THE_DEFAULT),
-                THE_DEFAULT_BUTTON, THE_DEFAULT_PORTRAIT, Magineer.Enums.THE_DEFAULT);
+        BaseMod.addCharacter(new Magineer("Magineer", Magineer.Enums.MAGINEER),
+                MAGINEER_BUTTON, MAGINEER_PORTRAIT, Magineer.Enums.MAGINEER);
 
         receiveEditPotions();
-        logger.info("Added " + Magineer.Enums.THE_DEFAULT.toString());
+        logger.info("Added " + Magineer.Enums.MAGINEER.toString());
     }
 
     // =============== /LOAD THE CHARACTER/ =================
@@ -240,7 +239,7 @@ public class MagineerMod implements
         // part of the game, simply don't include the dungeon ID
         // If you want to have a character-specific event, look at slimebound (CityRemoveEventPatch).
         // Essentially, you need to patch the game and say "if a player is not playing my character class, remove the event from the pool"
-        BaseMod.addEvent(IdentityCrisisEvent.ID, IdentityCrisisEvent.class, TheCity.ID);
+        //BaseMod.addEvent(IdentityCrisisEvent.ID, IdentityCrisisEvent.class, TheCity.ID);
 
         // =============== /EVENTS/ =================
         logger.info("Done loading badge Image and mod options");
@@ -257,9 +256,9 @@ public class MagineerMod implements
         logger.info("Beginning to edit potions");
 
         // Class Specific Potion. If you want your potion to not be class-specific,
-        // just remove the player class at the end (in this case the "TheDefaultEnum.THE_DEFAULT".
+        // just remove the player class at the end (in this case the "TheDefaultEnum.MAGINEER".
         // Remember, you can press ctrl+P inside parentheses like addPotions)
-        BaseMod.addPotion(PlaceholderPotion.class, PLACEHOLDER_POTION_LIQUID, PLACEHOLDER_POTION_HYBRID, PLACEHOLDER_POTION_SPOTS, PlaceholderPotion.POTION_ID, Magineer.Enums.THE_DEFAULT);
+        BaseMod.addPotion(PlaceholderPotion.class, PLACEHOLDER_POTION_LIQUID, PLACEHOLDER_POTION_HYBRID, PLACEHOLDER_POTION_SPOTS, PlaceholderPotion.POTION_ID, Magineer.Enums.MAGINEER);
 
         logger.info("Done editing potions");
     }
@@ -325,11 +324,14 @@ public class MagineerMod implements
         // Unlock the cards
         // This is so that they are all "seen" in the library, for people who like to look at the card list
         // before playing your mod.
+        UnlockTracker.unlockCard(MagineerStrike.ID);
+        UnlockTracker.unlockCard(MagineerDefend.ID);
+        UnlockTracker.unlockCard(Blueprint.ID);
+        UnlockTracker.unlockCard(Implement.ID);
+
         UnlockTracker.unlockCard(OrbSkill.ID);
         UnlockTracker.unlockCard(DefaultSecondMagicNumberSkill.ID);
-        UnlockTracker.unlockCard(MagineerStrike.ID);
         UnlockTracker.unlockCard(DefaultAttackWithVariable.ID);
-        UnlockTracker.unlockCard(MagineerDefend.ID);
         UnlockTracker.unlockCard(DefaultCommonPower.ID);
         UnlockTracker.unlockCard(DefaultUncommonSkill.ID);
         UnlockTracker.unlockCard(DefaultUncommonAttack.ID);
@@ -357,6 +359,10 @@ public class MagineerMod implements
         // CardStrings
         BaseMod.loadCustomStringsFile(CardStrings.class,
                 getModID() + "Resources/localization/eng/MagineerMod-Card-Strings.json");
+
+        logger.info(getModID() + "Resources/localization/eng/MagineerMod-Card-Strings.json");
+        //logger.info(CardCrawlGame.languagePack);
+        //logger.info(CardCrawlGame.languagePack.getCardStrings("magineer:MagineerStrike"));
 
         // PowerStrings
         BaseMod.loadCustomStringsFile(PowerStrings.class,
@@ -405,7 +411,7 @@ public class MagineerMod implements
 
         if (keywords != null) {
             for (Keyword keyword : keywords) {
-                BaseMod.addKeyword(keyword.PROPER_NAME, keyword.NAMES, keyword.DESCRIPTION);
+                BaseMod.addKeyword("magineer", keyword.PROPER_NAME, keyword.NAMES, keyword.DESCRIPTION);
             }
         }
     }
