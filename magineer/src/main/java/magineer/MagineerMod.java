@@ -163,9 +163,15 @@ public class MagineerMod implements
     // DON'T TOUCH THIS STUFF. IT IS HERE FOR STANDARDIZATION BETWEEN MODS AND TO ENSURE GOOD CODE PRACTICES.
     // IF YOU MODIFY THIS I WILL HUNT YOU DOWN AND DOWNVOTE YOUR MOD ON WORKSHOP
 
-    public static void setModID(String ID) {
-        modID = ID;
-    }
+    public static void setModID(String ID) { // DON'T EDIT
+        if (ID.equals("theDefault")) { // DO *NOT* CHANGE THIS ESPECIALLY, TO EDIT YOUR MOD ID, SCROLL UP JUST A LITTLE, IT'S JUST ABOVE
+            throw new RuntimeException("Go to your constructor in your class with SpireInitializer and change your mod ID from \"theDefault\""); // THIS ALSO DON'T EDIT
+        } else if (ID.equals("theDefaultDev")) { // NO
+            modID = "theDefault"; // DON'T
+        } else { // NO EDIT AREA
+            modID = ID; // DON'T WRITE OR CHANGE THINGS NOT EVEN A LITTLE
+        } // NO
+    } // NO
 
     public static String getModID() {
         return modID;
