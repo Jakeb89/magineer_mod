@@ -34,7 +34,7 @@ import static magineer.characters.Magineer.Enums.COLOR_GRAY;
 
 //Wiki-page https://github.com/daviscook477/BaseMod/wiki/Custom-Characters
 //and https://github.com/daviscook477/BaseMod/wiki/Migrating-to-5.0
-//All text (starting description and loadout, anything labeled TEXT[]) can be found in MagineerMod-character-Strings.json in the resources
+//All text (starting description and loadout, anything labeled chooseDesc[]) can be found in MagineerMod-character-Strings.json in the resources
 
 public class Magineer extends CustomPlayer {
     public static final Logger logger = LogManager.getLogger(MagineerMod.class.getName());
@@ -64,7 +64,7 @@ public class Magineer extends CustomPlayer {
     public static final int STARTING_HP = 75;
     public static final int MAX_HP = 75;
     public static final int STARTING_GOLD = 99;
-    public static final int CARD_DRAW = 9;
+    public static final int CARD_DRAW = 5;
     public static final int ORB_SLOTS = 3;
 
     // =============== /BASE STATS/ =================
@@ -81,7 +81,7 @@ public class Magineer extends CustomPlayer {
             "Navigating an unlit street, you come across several hooded figures in the midst of some dark ritual. " +
                     "As you approach, they turn to you in eerie unison. The tallest among them bares fanged teeth and " +
                     "extends a long, pale hand towards you. NL ~\"Join~ ~us~ ~basic~ ~one,~ ~and~ ~feel~ ~the~ ~warmth~ " +
-                    "~of~ ~the~ ~Spire.\"~"}; //characterStrings.TEXT;
+                    "~of~ ~the~ ~Spire.\"~"}; //characterStrings.chooseDesc;
 
     // =============== /STRINGS/ =================
 
@@ -136,12 +136,12 @@ public class Magineer extends CustomPlayer {
         // =============== /ANIMATIONS/ =================
 
 
-        // =============== TEXT BUBBLE LOCATION =================
+        // =============== chooseDesc BUBBLE LOCATION =================
 
         dialogX = (drawX + 0.0F * Settings.scale); // set location for text bubbles
         dialogY = (drawY + 220.0F * Settings.scale); // you can just copy these values
 
-        // =============== /TEXT BUBBLE LOCATION/ =================
+        // =============== /chooseDesc BUBBLE LOCATION/ =================
 
     }
 
@@ -198,6 +198,7 @@ public class Magineer extends CustomPlayer {
     public ArrayList<String> getStartingRelics() {
         ArrayList<String> retVal = new ArrayList<>();
 
+        /*
         retVal.add(PlaceholderRelic.ID);
         retVal.add(PlaceholderRelic2.ID);
         retVal.add(DefaultClickableRelic.ID);
@@ -205,6 +206,7 @@ public class Magineer extends CustomPlayer {
         UnlockTracker.markRelicAsSeen(PlaceholderRelic.ID);
         UnlockTracker.markRelicAsSeen(PlaceholderRelic2.ID);
         UnlockTracker.markRelicAsSeen(DefaultClickableRelic.ID);
+        */
 
         return retVal;
     }

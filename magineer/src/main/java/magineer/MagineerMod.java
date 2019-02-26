@@ -350,7 +350,7 @@ public class MagineerMod implements
     // ================ /ADD CARDS/ ===================
 
 
-    // ================ LOAD THE TEXT ===================
+    // ================ LOAD THE chooseDesc ===================
 
     @Override
     public void receiveEditStrings() {
@@ -391,7 +391,7 @@ public class MagineerMod implements
         logger.info("Done edittting strings");
     }
 
-    // ================ /LOAD THE TEXT/ ===================
+    // ================ /LOAD THE chooseDesc/ ===================
 
     // ================ LOAD THE KEYWORDS ===================
 

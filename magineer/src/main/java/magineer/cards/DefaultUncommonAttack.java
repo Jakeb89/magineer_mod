@@ -22,7 +22,7 @@ public class DefaultUncommonAttack extends CustomCard {
      * Big Slap Deal 10(15)) damage.
      */
 
-    // TEXT DECLARATION 
+    // chooseDesc DECLARATION
 
     public static final String ID = MagineerMod.makeID("DefaultUncommonAttack");
     private static final CardStrings cardStrings = CardCrawlGame.languagePack.getCardStrings(ID);
@@ -31,7 +31,7 @@ public class DefaultUncommonAttack extends CustomCard {
     public static final String NAME = cardStrings.NAME;
     public static final String DESCRIPTION = cardStrings.DESCRIPTION;
 
-    // /TEXT DECLARATION/
+    // /chooseDesc DECLARATION/
 
 
     // STAT DECLARATION 	

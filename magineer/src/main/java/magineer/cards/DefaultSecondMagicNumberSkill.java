@@ -29,7 +29,7 @@ public class DefaultSecondMagicNumberSkill extends MagineerCard {
      * Apply 2(5) vulnerable and 4(9) poison to an enemy.
      */
 
-    // TEXT DECLARATION
+    // chooseDesc DECLARATION
 
     public static final String ID = MagineerMod.makeID("DefaultSecondMagicNumberSkill");
     private static final CardStrings cardStrings = CardCrawlGame.languagePack.getCardStrings(ID);
@@ -39,7 +39,7 @@ public class DefaultSecondMagicNumberSkill extends MagineerCard {
     public static final String NAME = cardStrings.NAME;
     public static final String DESCRIPTION = cardStrings.DESCRIPTION;
 
-    // /TEXT DECLARATION/
+    // /chooseDesc DECLARATION/
 
 
     // STAT DECLARATION

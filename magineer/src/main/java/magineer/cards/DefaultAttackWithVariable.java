@@ -23,7 +23,7 @@ public class DefaultAttackWithVariable extends CustomCard {
      * Special Strike: Deal 7 (*) damage times the energy you currently have.
      */
 
-    // TEXT DECLARATION
+    // chooseDesc DECLARATION
 
     public static final String ID = MagineerMod.makeID("DefaultAttackWithVariable");
     private static final CardStrings cardStrings = CardCrawlGame.languagePack.getCardStrings(ID);
@@ -33,7 +33,7 @@ public class DefaultAttackWithVariable extends CustomCard {
     public static final String DESCRIPTION = cardStrings.DESCRIPTION;
     public static final String UPGRADE_DESCRIPTION = cardStrings.UPGRADE_DESCRIPTION;
 
-    // /TEXT DECLARATION/
+    // /chooseDesc DECLARATION/
 
 
     // STAT DECLARATION

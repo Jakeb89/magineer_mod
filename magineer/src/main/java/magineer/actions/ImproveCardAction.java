@@ -13,8 +13,8 @@ import magineer.cards.MagineerCard;
 import magineer.powers.CommonPower;
 
 public class ImproveCardAction extends AbstractGameAction {
-    private AbstractCard card;
-    private int amount;
+    private final AbstractCard card;
+    private final int amount;
 
     public ImproveCardAction(final AbstractCard card, final int amount){
         this.card = card;

@@ -21,7 +21,7 @@ public class OrbSkill extends CustomCard {
      * Channel 1 Default Orb.
      */
 
-    // TEXT DECLARATION
+    // chooseDesc DECLARATION
 
     public static final String ID = MagineerMod.makeID("OrbSkill");
     private static final CardStrings cardStrings = CardCrawlGame.languagePack.getCardStrings(ID);
@@ -31,7 +31,7 @@ public class OrbSkill extends CustomCard {
     public static final String NAME = cardStrings.NAME;
     public static final String DESCRIPTION = cardStrings.DESCRIPTION;
 
-    // /TEXT DECLARATION/
+    // /chooseDesc DECLARATION/
 
 
     // STAT DECLARATION

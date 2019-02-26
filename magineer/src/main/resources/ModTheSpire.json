@@ -1,8 +1,8 @@
 {
   "modid": "magineermod",
   "name": "Magineer Mod",
-  "author_list": ["Gremious"],
-  "description": "A base for Slay the Spire to start your own mod from.",
+  "author_list": ["Hexblue"],
+  "description": "A blend of technology and magic. Primarily a tech demo for HexUILib.",
   "version": "${project.version}",
   "sts_version": "${SlayTheSpire.version}",
   "mts_version": "${ModTheSpire.version}",

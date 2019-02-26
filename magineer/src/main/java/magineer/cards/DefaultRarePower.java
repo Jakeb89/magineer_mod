@@ -22,7 +22,7 @@ public class DefaultRarePower extends CustomCard {
      * In-Progress Form At the start of your turn, play a TOUCH.
      */
 
-    // TEXT DECLARATION 
+    // chooseDesc DECLARATION
 
     public static final String ID = MagineerMod.makeID("DefaultRarePower");
     private static final CardStrings cardStrings = CardCrawlGame.languagePack.getCardStrings(ID);
@@ -31,7 +31,7 @@ public class DefaultRarePower extends CustomCard {
     public static final String NAME = cardStrings.NAME;
     public static final String DESCRIPTION = cardStrings.DESCRIPTION;
 
-    // /TEXT DECLARATION/
+    // /chooseDesc DECLARATION/
 
 
     // STAT DECLARATION 	

@@ -90,12 +90,9 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
                 <excludes>
-                    <exclude>ModTheSpire.json</exclude>
+                    <exclude>**/*.psd</exclude>
+                    <exclude>**/*.psb</exclude>
                 </excludes>
             </resource>
             <resource>

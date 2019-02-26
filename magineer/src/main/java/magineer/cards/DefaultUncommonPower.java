@@ -21,7 +21,7 @@ public class DefaultUncommonPower extends CustomCard {
      * Weirdness Apply X (+1) keywords to yourself.
      */
 
-    // TEXT DECLARATION 
+    // chooseDesc DECLARATION
 
     public static final String ID = MagineerMod.makeID("DefaultUncommonPower");
     private static final CardStrings cardStrings = CardCrawlGame.languagePack.getCardStrings(ID);
@@ -31,7 +31,7 @@ public class DefaultUncommonPower extends CustomCard {
     public static final String DESCRIPTION = cardStrings.DESCRIPTION;
     public static final String UPGRADE_DESCRIPTION = cardStrings.UPGRADE_DESCRIPTION;
 
-    // /TEXT DECLARATION/
+    // /chooseDesc DECLARATION/
 
     // STAT DECLARATION 	
 

@@ -9,6 +9,8 @@ import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.localization.CardStrings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import hexui_lib.util.RenderCommandLayer;
+import hexui_lib.util.RenderImageLayer;
 import hexui_lib.util.RenderLayer;
 import magineer.MagineerMod;
 import magineer.actions.ImproveCardAction;
@@ -25,7 +27,7 @@ public class MagineerStrike extends MagineerCard{
      * Strike Deal 7(9) damage.
      */
 
-    // TEXT DECLARATION
+    // chooseDesc DECLARATION
 
     public static final String ID = MagineerMod.makeID("MagineerStrike");
     private static final CardStrings cardStrings = CardCrawlGame.languagePack.getCardStrings(ID);
@@ -40,10 +42,10 @@ public class MagineerStrike extends MagineerCard{
 
 
     public static final String NAME = "Strike"; //cardStrings.NAME;
-    public static final String DESCRIPTION = "Deal !D! damage."; //cardStrings.DESCRIPTION;
+    public static final String DESCRIPTION = "Deal !D! damage. NL magineer:Self-Improving."; //cardStrings.DESCRIPTION;
     public static final String portraitFilename = "magineer_strike.png";
 
-    // /TEXT DECLARATION/
+    // /chooseDesc DECLARATION/
 
 
     // STAT DECLARATION
@@ -54,8 +56,8 @@ public class MagineerStrike extends MagineerCard{
     public static final CardColor COLOR = Magineer.Enums.COLOR_GRAY;
 
     private static final int COST = 1;
-    private static final int DAMAGE = 7;
-    private static final int UPGRADE_PLUS_DMG = 2;
+    private static final int DAMAGE = 5;
+    private static final int UPGRADE_PLUS_DMG = 3;
 
     // Hey want a second damage/magic/block/unique number??? Great!
     // Go check out DefaultAttackWithVariable and magineer.variable.DefaultCustomVariable
@@ -66,6 +68,9 @@ public class MagineerStrike extends MagineerCard{
 
     public MagineerStrike() {
         super(ID, NAME, IMG, COST, DESCRIPTION, TYPE, COLOR, RARITY, TARGET);
+        artistNames.add("Jake Berry");
+        flavorText = "There is a reason that spears are one of the oldest weapons known to man. " +
+                "You may not be a swordfighter, but you /will/ learn to use a spear.";
 
         MagineerMod.logger.info("ID: "+ID);
         MagineerMod.logger.info("cardStrings: "+cardStrings);
@@ -81,8 +86,18 @@ public class MagineerStrike extends MagineerCard{
         this.tags.add(BaseModCardTags.BASIC_STRIKE); //Tag your strike, defend and form (Shadow form, demon form, echo form, etc.) cards so that they function correctly.
         this.tags.add(CardTags.STRIKE);
 
-        cardArtLayers512.add(new RenderLayer(TextureLoader.getTexture(cardArt512+portraitFilename)));
-        cardArtLayers1024.add(new RenderLayer(TextureLoader.getTexture(cardArt1024+portraitFilename)));
+        String circleMask = "circleMask.png";
+        String starBurst = "starBurst.png";
+
+        cardArtLayers512.add(new RenderImageLayer(TextureLoader.getTexture(cardArt512+portraitFilename)));
+        cardArtLayers512.add(new RenderCommandLayer(RenderCommandLayer.COMMAND.FBO_START));
+        cardArtLayers512.add(new RenderImageLayer(TextureLoader.getTexture(cardArt512+circleMask), null,
+                RenderLayer.BLENDMODE.CREATEMASK, null, 0f, null));
+        cardArtLayers512.add(new RenderImageLayer(TextureLoader.getTexture(cardArt512+starBurst), null,
+                RenderLayer.BLENDMODE.RECEIVEMASK, null, 0f, null));
+        cardArtLayers512.add(new RenderCommandLayer(RenderCommandLayer.COMMAND.FBO_END));
+
+        cardArtLayers1024.add(new RenderImageLayer(TextureLoader.getTexture(cardArt1024+portraitFilename)));
 
         improvementSlots.add(SLOTTYPE.GRAY);
         improvementSlots.add(SLOTTYPE.GRAY);
@@ -96,8 +111,7 @@ public class MagineerStrike extends MagineerCard{
         AbstractDungeon.actionManager.addToBottom(
                 new DamageAction(m, new DamageInfo(p, damage, damageTypeForTurn),
                         AbstractGameAction.AttackEffect.SLASH_HORIZONTAL));
-        AbstractDungeon.actionManager.addToBottom(
-                new ImproveCardAction(this, 1));
+        AbstractDungeon.actionManager.addToBottom(new ImproveCardAction(this, 1));
     }
 
     // Upgraded stats.
@@ -108,6 +122,16 @@ public class MagineerStrike extends MagineerCard{
             upgradeDamage(UPGRADE_PLUS_DMG);
             initializeDescription();
         }
+    }
+
+    @Override
+    public void gainedImprovementLevel(int level){
+        upgradeDamage(1);
+    }
+
+    @Override
+    public void lostImprovementLevel(int level){
+        upgradeDamage(-1);
     }
 
     public void update(){

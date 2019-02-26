@@ -22,7 +22,7 @@ public class DefaultCommonPower extends CustomCard {
      */
 
 
-    // TEXT DECLARATION 
+    // chooseDesc DECLARATION
 
     public static final String ID = MagineerMod.makeID("DefaultCommonPower");
     private static final CardStrings cardStrings = CardCrawlGame.languagePack.getCardStrings(ID);
@@ -33,7 +33,7 @@ public class DefaultCommonPower extends CustomCard {
     public static final String DESCRIPTION = cardStrings.DESCRIPTION;
     public static final String UPGRADE_DESCRIPTION = cardStrings.UPGRADE_DESCRIPTION;
 
-    // /TEXT DECLARATION/
+    // /chooseDesc DECLARATION/
 
 
     // STAT DECLARATION 	

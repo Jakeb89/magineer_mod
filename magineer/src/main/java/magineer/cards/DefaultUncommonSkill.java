@@ -21,7 +21,7 @@ public class DefaultUncommonSkill extends CustomCard {
      * A Better Defend Gain 1 Plated Armor. Affected by Dexterity.
      */
 
-    // TEXT DECLARATION 
+    // chooseDesc DECLARATION
 
     public static final String ID = MagineerMod.makeID("DefaultUncommonSkill");
     private static final CardStrings cardStrings = CardCrawlGame.languagePack.getCardStrings(ID);
@@ -31,7 +31,7 @@ public class DefaultUncommonSkill extends CustomCard {
     public static final String NAME = cardStrings.NAME;
     public static final String DESCRIPTION = cardStrings.DESCRIPTION;
 
-    // /TEXT DECLARATION/
+    // /chooseDesc DECLARATION/
 
     // STAT DECLARATION 	
 

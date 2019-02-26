@@ -1,13 +1,17 @@
 [
   {
+    "PROPER_NAME": "Self-Improving",
+    "NAMES": [
+      "self-improving"
+    ],
+    "DESCRIPTION": "Attempts to improve itself after being played. This can only fill gray improvement slots."
+  },
+  {
     "PROPER_NAME": "Improvement",
     "NAMES": [
       "improvement",
       "improvements",
-      "improved",
-      "Improvement",
-      "Improvements",
-      "Improved"
+      "improved"
     ],
     "DESCRIPTION": "Some cards have improvement slots along their left side. Orange improvement slots can be filled with Progress, blue improvement slots can be filled with Insight, and gray slots can be filled with either."
   },
@@ -15,17 +19,14 @@
     "PROPER_NAME": "Insight",
     "NAMES": [
       "insight",
-      "insights",
-      "Insight",
-      "Insights"
+      "insights"
     ],
     "DESCRIPTION": "Insight can fill blue or gray improvement slots on cards to improve their effects."
   },
   {
     "PROPER_NAME": "Progress",
     "NAMES": [
-      "progress",
-      "Progress"
+      "progress"
     ],
     "DESCRIPTION": "Progress can fill orange or gray improvement slots on cards to improve their effects."
   },

@@ -34,7 +34,7 @@ public class cardTemplate extends MagineerCard {
      * You can create templates for anything you ever want to. Cards, relics, powers, orbs, etc. etc. etc.
      */
 
-    // TEXT DECLARATION
+    // chooseDesc DECLARATION
 
     public static final String ID = MagineerMod.makeID("MagineerStrike"); // MagineerMod.makeID("${NAME}");
     private static final CardStrings cardStrings = CardCrawlGame.languagePack.getCardStrings(ID);
@@ -45,7 +45,7 @@ public class cardTemplate extends MagineerCard {
     public static final String NAME = cardStrings.NAME;
     public static final String DESCRIPTION = cardStrings.DESCRIPTION;
 
-    // /TEXT DECLARATION/
+    // /chooseDesc DECLARATION/
 
 
     // STAT DECLARATION
