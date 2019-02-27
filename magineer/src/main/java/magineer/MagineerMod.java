@@ -308,8 +308,16 @@ public class MagineerMod implements
         BaseMod.addCard(new Blueprint());
         BaseMod.addCard(new Implement());
 
+        BaseMod.addCard(new UncommonAttack());
+        BaseMod.addCard(new UncommonSkill());
+        BaseMod.addCard(new UncommonPower());
 
-        BaseMod.addCard(new OrbSkill());
+        BaseMod.addCard(new RareAttack());
+        BaseMod.addCard(new RareSkill());
+        BaseMod.addCard(new RarePower());
+
+
+        /*BaseMod.addCard(new OrbSkill());
         BaseMod.addCard(new DefaultSecondMagicNumberSkill());
         BaseMod.addCard(new DefaultAttackWithVariable());
         BaseMod.addCard(new DefaultCommonPower());
@@ -318,7 +326,7 @@ public class MagineerMod implements
         BaseMod.addCard(new DefaultUncommonPower());
         BaseMod.addCard(new DefaultRareAttack());
         BaseMod.addCard(new DefaultRareSkill());
-        BaseMod.addCard(new DefaultRarePower());
+        BaseMod.addCard(new DefaultRarePower());*/
 
         logger.info("Making sure the cards are unlocked.");
         // Unlock the cards
@@ -329,7 +337,15 @@ public class MagineerMod implements
         UnlockTracker.unlockCard(Blueprint.ID);
         UnlockTracker.unlockCard(Implement.ID);
 
-        UnlockTracker.unlockCard(OrbSkill.ID);
+        UnlockTracker.unlockCard(UncommonAttack.ID);
+        UnlockTracker.unlockCard(UncommonSkill.ID);
+        UnlockTracker.unlockCard(UncommonPower.ID);
+
+        UnlockTracker.unlockCard(RareAttack.ID);
+        UnlockTracker.unlockCard(RareSkill.ID);
+        UnlockTracker.unlockCard(RarePower.ID);
+
+        /*UnlockTracker.unlockCard(OrbSkill.ID);
         UnlockTracker.unlockCard(DefaultSecondMagicNumberSkill.ID);
         UnlockTracker.unlockCard(DefaultAttackWithVariable.ID);
         UnlockTracker.unlockCard(DefaultCommonPower.ID);
@@ -338,7 +354,7 @@ public class MagineerMod implements
         UnlockTracker.unlockCard(DefaultUncommonPower.ID);
         UnlockTracker.unlockCard(DefaultRareAttack.ID);
         UnlockTracker.unlockCard(DefaultRareSkill.ID);
-        UnlockTracker.unlockCard(DefaultRarePower.ID);
+        UnlockTracker.unlockCard(DefaultRarePower.ID);*/
 
         logger.info("Done adding cards!");
     }

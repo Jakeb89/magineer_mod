@@ -1,16 +1,19 @@
 package magineer.cards;
 
 import basemod.abstracts.CustomCard;
+import com.badlogic.gdx.Gdx;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.vfx.combat.PlasmaOrbPassiveEffect;
 import hexui_lib.interfaces.CustomCardPortrait;
 import hexui_lib.interfaces.CustomCardTypeLocation;
 import hexui_lib.interfaces.FlavorTooltips;
-import hexui_lib.util.FloatPair;
-import hexui_lib.util.RenderImageLayer;
-import hexui_lib.util.RenderLayer;
+import hexui_lib.util.*;
 import magineer.util.TextureLoader;
 
 import java.util.ArrayList;
+
+import static hexui_lib.util.RenderLayer.CM_FULL;
 
 public abstract class MagineerCard extends CustomCard implements CustomCardPortrait, CustomCardTypeLocation, FlavorTooltips {
 
@@ -58,9 +61,18 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
     public static final String descShadow = "bg_fullportrait_desc_shadow.png";
     public static final String cardTypePanel = "bg_cardtype_gray.png";
 
+    public static final String empty = "empty.png";
+
     public static final String attackBorder = "bg_attack_fullportait_gray.png";
     public static final String skillBorder = "bg_skill_fullportait_gray.png";
     public static final String powerBorder = "bg_power_fullportait_gray.png";
+
+    public static final String effect_stars = "effect_stars.png";
+    public static final String effect_rainbow = "effect_rainbow_clouds.png";
+    public static final String mask_clouds = "mask_horizontal_clouds.png";
+    public static final String mask_stars = "mask_stars.png";
+    public static final String mask_stars2 = "mask_stars2.png";
+    public static final String mask_crystallize = "mask_crystallize.png";
 
     private ArrayList<RenderLayer> portraitLayers512 = new ArrayList<RenderLayer>();
     private ArrayList<RenderLayer> portraitLayers1024 = new ArrayList<RenderLayer>();
@@ -70,6 +82,9 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
 
     protected String flavorText = "-";
     protected ArrayList<String> artistNames = new ArrayList<String>();
+    protected boolean isFoil = false;
+    protected Wobbler foilWobbler = new Wobbler(20f, 2, 1);
+    protected float foilSparkleCountdown = 2f;
 
     public void addImprovements(int amount) {
         addImprovements(amount, SLOTTYPE.GRAY);
@@ -193,12 +208,17 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
             slotBlue512   .add(new RenderImageLayer(TextureLoader.getTexture(images512 + "slot_blue_"+i+".png")));
             slotOrange512 .add(new RenderImageLayer(TextureLoader.getTexture(images512 + "slot_orange_"+i+".png")));
             slotGray512   .add(new RenderImageLayer(TextureLoader.getTexture(images512 + "slot_gray_"+i+".png")));
-            slotGlow512   .add(new RenderImageLayer(TextureLoader.getTexture(images512 + "slot_glow_"+i+".png"), null, RenderLayer.BLENDMODE.SCREEN));
+            slotGlow512   .add(new RenderImageLayer(TextureLoader.getTexture(images512 + "slot_glow_"+i+".png")));
 
             slotBlue1024  .add(new RenderImageLayer(TextureLoader.getTexture(images1024 + "slot_blue_"+i+".png")));
             slotOrange1024.add(new RenderImageLayer(TextureLoader.getTexture(images1024 + "slot_orange_"+i+".png")));
             slotGray1024  .add(new RenderImageLayer(TextureLoader.getTexture(images1024 + "slot_gray_"+i+".png")));
-            slotGlow1024  .add(new RenderImageLayer(TextureLoader.getTexture(images1024 + "slot_glow_"+i+".png"), null, RenderLayer.BLENDMODE.SCREEN));
+            slotGlow1024  .add(new RenderImageLayer(TextureLoader.getTexture(images1024 + "slot_glow_"+i+".png")));
+        }
+
+        for(int i=0; i<=6; i++){
+            slotGlow512   .add(new RenderImageLayer(TextureLoader.getTexture(images512 + "slot_glow_"+i+".png"), null, RenderLayer.BLENDMODE.CREATEMASK, null, 0f, CM_FULL));
+            slotGlow1024  .add(new RenderImageLayer(TextureLoader.getTexture(images1024 + "slot_glow_"+i+".png"), null, RenderLayer.BLENDMODE.CREATEMASK, null, 0f, CM_FULL));
         }
 
         improvementSlotsPanel512  = new RenderImageLayer(TextureLoader.getTexture(images512  + "improvement_slots_panel.png"));
@@ -255,7 +275,19 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
                 case BLUE:   portraitLayers512.add(slotBlue512.get(i));   break;
             }
             if(improvements > i) {
-                portraitLayers512.add(slotGlow512.get(i));
+                //portraitLayers512.add(slotGlow512.get(i));
+
+                portraitLayers512.add(new RenderCommandLayer(RenderCommandLayer.COMMAND.FBO_START));
+                //portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(cardArt512+getFoilArtFilename()))); //Thing to be masked
+                portraitLayers512.add(new RenderImageLayer(TextureLoader.getTexture(images512+effect_rainbow))); //Thing to be masked
+                portraitLayers512.add(slotGlow512.get(i)); //Make light brighter in center.
+
+                portraitLayers512.add(slotGlow512.get(i+7)); //The mask itself
+                portraitLayers512.add(new RenderImageLayer(TextureLoader.getTexture(images512+empty), null,
+                        RenderLayer.BLENDMODE.RECEIVEMASK, null, 0f, null)); //Finally, do magic because reasons.
+
+                portraitLayers512.add(new RenderCommandLayer(RenderCommandLayer.COMMAND.FBO_END_SCREEN));
+
             }
         }
 
@@ -316,13 +348,114 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
         for(RenderLayer layer : cardArtLayers512){
             portraitLayers.add(layer);
         }
+        if(isFoil){
+            renderFoilEffects(portraitLayers, false);
+        }
     }
 
     public void addCardArtLayers1024(ArrayList<RenderLayer> portraitLayers){
         for(RenderLayer layer : cardArtLayers1024){
             portraitLayers.add(layer);
         }
+        if(isFoil){
+            renderFoilEffects(portraitLayers, false);
+        }
+    }
 
+    private void renderFoilEffects(ArrayList<RenderLayer> portraitLayers, boolean isBigCard){
+        foilWobbler.step();
+
+        String images = images512;
+        String cardArt = cardArt512;
+        if(isBigCard){
+            images = images1024;
+            cardArt = cardArt1024;
+        }
+
+        portraitLayers.add(new RenderCommandLayer(RenderCommandLayer.COMMAND.FBO_START));
+        //portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(cardArt512+getFoilArtFilename()))); //Thing to be masked
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_rainbow))); //Thing to be masked
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_stars), null,
+                RenderLayer.BLENDMODE.SCREEN, new FloatPair(foilWobbler.get(0)*4, foilWobbler.get(1)*8)));
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_stars), null,
+                RenderLayer.BLENDMODE.SCREEN, new FloatPair(foilWobbler.get(0)*4, foilWobbler.get(1)*8)));
+
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+mask_stars), null,
+                RenderLayer.BLENDMODE.CREATEMASK, new FloatPair(foilWobbler.get(0)*4, foilWobbler.get(1)*8), 0f, null)); //The mask itself
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(cardArt+getFoilArtFilename()), null,
+                RenderLayer.BLENDMODE.CREATEMASK, null, 0f, null)); //The mask itself
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+empty), null,
+                RenderLayer.BLENDMODE.RECEIVEMASK, null, 0f, null)); //Finally, do magic because reasons.
+
+        portraitLayers.add(new RenderCommandLayer(RenderCommandLayer.COMMAND.FBO_END_DOUBLESCREEN));
+
+
+        portraitLayers.add(new RenderCommandLayer(RenderCommandLayer.COMMAND.FBO_START));
+        //portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(cardArt512+getFoilArtFilename()))); //Thing to be masked
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_rainbow))); //Thing to be masked
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_stars), null,
+                RenderLayer.BLENDMODE.SCREEN, new FloatPair(foilWobbler.get(0)*-8, foilWobbler.get(1)*4)));
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_stars), null,
+                RenderLayer.BLENDMODE.SCREEN, new FloatPair(foilWobbler.get(0)*-8, foilWobbler.get(1)*4)));
+
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+mask_stars2), null,
+                RenderLayer.BLENDMODE.CREATEMASK, new FloatPair(foilWobbler.get(0)*-8, foilWobbler.get(1)*4), 0f, null)); //The mask itself
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(cardArt+getFoilArtFilename()), null,
+                RenderLayer.BLENDMODE.CREATEMASK, null, 0f, null)); //The mask itself
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+empty), null,
+                RenderLayer.BLENDMODE.RECEIVEMASK, null, 0f, null)); //Finally, do magic because reasons.
+
+        portraitLayers.add(new RenderCommandLayer(RenderCommandLayer.COMMAND.FBO_END_DOUBLESCREEN));
+
+
+        portraitLayers.add(new RenderCommandLayer(RenderCommandLayer.COMMAND.FBO_START));
+        //portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(cardArt512+getFoilArtFilename()))); //Thing to be masked
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_rainbow))); //Thing to be masked
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_stars), null,
+                RenderLayer.BLENDMODE.SCREEN, new FloatPair(foilWobbler.get(0)*-17, foilWobbler.get(1)*-5)));
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_stars), null,
+                RenderLayer.BLENDMODE.SCREEN, new FloatPair(foilWobbler.get(0)*-12, foilWobbler.get(1)*-4)));
+
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_stars), null,
+                RenderLayer.BLENDMODE.SCREEN, new FloatPair(foilWobbler.get(0)*3, foilWobbler.get(1)*-8)));
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_stars), null,
+                RenderLayer.BLENDMODE.SCREEN, new FloatPair(foilWobbler.get(0)*2, foilWobbler.get(1)*-15)));
+
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+mask_crystallize), null,
+                RenderLayer.BLENDMODE.CREATEMASK, new FloatPair(foilWobbler.get(0)*-7, foilWobbler.get(1)*-3), 0f, null)); //The mask itself
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(cardArt+getFoilArtFilename()), null,
+                RenderLayer.BLENDMODE.CREATEMASK, null, 0f, null)); //The mask itself
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+empty), null,
+                RenderLayer.BLENDMODE.RECEIVEMASK, null, 0f, null)); //Finally, do magic because reasons.
+
+        portraitLayers.add(new RenderCommandLayer(RenderCommandLayer.COMMAND.FBO_END_SCREEN));
+
+
+        portraitLayers.add(new RenderCommandLayer(RenderCommandLayer.COMMAND.FBO_START));
+        //portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(cardArt512+getFoilArtFilename()))); //Thing to be masked
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_rainbow))); //Thing to be masked
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_stars), null,
+                RenderLayer.BLENDMODE.SCREEN, new FloatPair(foilWobbler.get(0)*5, foilWobbler.get(1)*15)));
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_stars), null,
+                RenderLayer.BLENDMODE.SCREEN, new FloatPair(foilWobbler.get(0)*7, foilWobbler.get(1)*11)));
+
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_stars), null,
+                RenderLayer.BLENDMODE.SCREEN, new FloatPair(foilWobbler.get(0)*-19, foilWobbler.get(1)*-8)));
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_stars), null,
+                RenderLayer.BLENDMODE.SCREEN, new FloatPair(foilWobbler.get(0)*-5, foilWobbler.get(1)*-17)));
+
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+mask_crystallize), null,
+                RenderLayer.BLENDMODE.CREATEMASK, new FloatPair(foilWobbler.get(0)*11, foilWobbler.get(1)*-5), 0f, null)); //The mask itself
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(cardArt+getFoilArtFilename()), null,
+                RenderLayer.BLENDMODE.CREATEMASK, null, 0f, null)); //The mask itself
+        portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+empty), null,
+                RenderLayer.BLENDMODE.RECEIVEMASK, null, 0f, null)); //Finally, do magic because reasons.
+
+        portraitLayers.add(new RenderCommandLayer(RenderCommandLayer.COMMAND.FBO_END_DOUBLESCREEN));
+    }
+
+    public float rand(float min, float max){
+        return (float) ( Math.random()*(max-min) - min );
     }
 
     public String getFlavorText(){
@@ -331,5 +464,9 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
 
     public ArrayList<String> getArtistNames(){
         return artistNames;
+    }
+
+    public String getFoilArtFilename(){
+        return "magineer_strike.png";
     }
 }

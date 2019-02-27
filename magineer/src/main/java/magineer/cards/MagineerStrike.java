@@ -85,18 +85,9 @@ public class MagineerStrike extends MagineerCard{
 
         this.tags.add(BaseModCardTags.BASIC_STRIKE); //Tag your strike, defend and form (Shadow form, demon form, echo form, etc.) cards so that they function correctly.
         this.tags.add(CardTags.STRIKE);
-
-        String circleMask = "circleMask.png";
-        String starBurst = "starBurst.png";
+        isFoil = true;
 
         cardArtLayers512.add(new RenderImageLayer(TextureLoader.getTexture(cardArt512+portraitFilename)));
-        cardArtLayers512.add(new RenderCommandLayer(RenderCommandLayer.COMMAND.FBO_START));
-        cardArtLayers512.add(new RenderImageLayer(TextureLoader.getTexture(cardArt512+circleMask), null,
-                RenderLayer.BLENDMODE.CREATEMASK, null, 0f, null));
-        cardArtLayers512.add(new RenderImageLayer(TextureLoader.getTexture(cardArt512+starBurst), null,
-                RenderLayer.BLENDMODE.RECEIVEMASK, null, 0f, null));
-        cardArtLayers512.add(new RenderCommandLayer(RenderCommandLayer.COMMAND.FBO_END));
-
         cardArtLayers1024.add(new RenderImageLayer(TextureLoader.getTexture(cardArt1024+portraitFilename)));
 
         improvementSlots.add(SLOTTYPE.GRAY);
@@ -136,5 +127,10 @@ public class MagineerStrike extends MagineerCard{
 
     public void update(){
         super.update();
+    }
+
+    @Override
+    public String getFoilArtFilename(){
+        return portraitFilename;
     }
 }

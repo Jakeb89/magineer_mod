@@ -3,7 +3,7 @@
     <groupId>magineermod</groupId>
     <artifactId>MagineerMod</artifactId>
     <!--<version>1.2.0</version>-->
-    <version>0.0.1</version>
+    <version>0.0.4</version>
     <name>MagineerMod</name>
 
     <properties>
