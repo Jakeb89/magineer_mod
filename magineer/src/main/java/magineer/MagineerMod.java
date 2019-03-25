@@ -12,9 +12,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.evacipated.cardcrawl.mod.stslib.Keyword;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.Gson;
+import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.helpers.CardHelper;
 import com.megacrit.cardcrawl.localization.*;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
+import magineer.util.CardList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import magineer.cards.*;
@@ -296,65 +298,50 @@ public class MagineerMod implements
         //Ignore this
         pathCheck();
         // Add the Custom Dynamic Variables
-        logger.info("Add variabls");
+        logger.info("Add variables");
         // Add the Custom Dynamic variabls
         BaseMod.addDynamicVariable(new DefaultCustomVariable());
         BaseMod.addDynamicVariable(new DefaultSecondMagicNumber());
 
         logger.info("Adding cards");
         // Add the cards
+
+        CardList.addCards();
+        /*
         BaseMod.addCard(new MagineerStrike());
         BaseMod.addCard(new MagineerDefend());
         BaseMod.addCard(new Blueprint());
         BaseMod.addCard(new Implement());
 
+        BaseMod.addCard(new SummonCrystal());
+        BaseMod.addCard(new SummonAegis());
+
         BaseMod.addCard(new UncommonAttack());
-        BaseMod.addCard(new UncommonSkill());
         BaseMod.addCard(new UncommonPower());
 
         BaseMod.addCard(new RareAttack());
         BaseMod.addCard(new RareSkill());
         BaseMod.addCard(new RarePower());
 
+        BaseMod.addCard(new ImprovingStrike());
+        BaseMod.addCard(new ImprovingDefend());
+        */
 
-        /*BaseMod.addCard(new OrbSkill());
-        BaseMod.addCard(new DefaultSecondMagicNumberSkill());
-        BaseMod.addCard(new DefaultAttackWithVariable());
-        BaseMod.addCard(new DefaultCommonPower());
-        BaseMod.addCard(new DefaultUncommonSkill());
-        BaseMod.addCard(new DefaultUncommonAttack());
-        BaseMod.addCard(new DefaultUncommonPower());
-        BaseMod.addCard(new DefaultRareAttack());
-        BaseMod.addCard(new DefaultRareSkill());
-        BaseMod.addCard(new DefaultRarePower());*/
+
 
         logger.info("Making sure the cards are unlocked.");
         // Unlock the cards
         // This is so that they are all "seen" in the library, for people who like to look at the card list
         // before playing your mod.
+
+        CardList.unlockCards();
+        /*
         UnlockTracker.unlockCard(MagineerStrike.ID);
         UnlockTracker.unlockCard(MagineerDefend.ID);
         UnlockTracker.unlockCard(Blueprint.ID);
         UnlockTracker.unlockCard(Implement.ID);
+        */
 
-        UnlockTracker.unlockCard(UncommonAttack.ID);
-        UnlockTracker.unlockCard(UncommonSkill.ID);
-        UnlockTracker.unlockCard(UncommonPower.ID);
-
-        UnlockTracker.unlockCard(RareAttack.ID);
-        UnlockTracker.unlockCard(RareSkill.ID);
-        UnlockTracker.unlockCard(RarePower.ID);
-
-        /*UnlockTracker.unlockCard(OrbSkill.ID);
-        UnlockTracker.unlockCard(DefaultSecondMagicNumberSkill.ID);
-        UnlockTracker.unlockCard(DefaultAttackWithVariable.ID);
-        UnlockTracker.unlockCard(DefaultCommonPower.ID);
-        UnlockTracker.unlockCard(DefaultUncommonSkill.ID);
-        UnlockTracker.unlockCard(DefaultUncommonAttack.ID);
-        UnlockTracker.unlockCard(DefaultUncommonPower.ID);
-        UnlockTracker.unlockCard(DefaultRareAttack.ID);
-        UnlockTracker.unlockCard(DefaultRareSkill.ID);
-        UnlockTracker.unlockCard(DefaultRarePower.ID);*/
 
         logger.info("Done adding cards!");
     }
@@ -372,11 +359,19 @@ public class MagineerMod implements
     public void receiveEditStrings() {
         logger.info("Beginning to edit strings");
 
+
+        String language = "eng";
+        //if (Settings.language == Settings.GameLanguage.KOR) language = "kor";
+
+
+        //BaseMod.loadCustomStringsFile(CardStrings.class, "resources/localization/"+language+"/MagineerMod-Card-Strings.json");
+        //BaseMod.loadCustomStringsFile(OrbStrings.class, "resources/localization/"+language+"/MagineerMod-Orb-Strings.json");
+
         // CardStrings
         BaseMod.loadCustomStringsFile(CardStrings.class,
                 getModID() + "Resources/localization/eng/MagineerMod-Card-Strings.json");
 
-        logger.info(getModID() + "Resources/localization/eng/MagineerMod-Card-Strings.json");
+        //logger.info(getModID() + "Resources/localization/eng/MagineerMod-Card-Strings.json");
         //logger.info(CardCrawlGame.languagePack);
         //logger.info(CardCrawlGame.languagePack.getCardStrings("magineer:MagineerStrike"));
 
@@ -400,11 +395,10 @@ public class MagineerMod implements
         BaseMod.loadCustomStringsFile(CharacterStrings.class,
                 getModID() + "Resources/localization/eng/MagineerMod-Character-Strings.json");
 
-        // OrbStrings
-        BaseMod.loadCustomStringsFile(OrbStrings.class,
-                getModID() + "Resources/localization/eng/MagineerMod-Orb-Strings.json");
+        //OrbStrings
+        BaseMod.loadCustomStringsFile(OrbStrings.class,getModID() + "Resources/localization/eng/MagineerMod-Orb-Strings.json");
 
-        logger.info("Done edittting strings");
+        logger.info("Done editing strings");
     }
 
     // ================ /LOAD THE chooseDesc/ ===================
@@ -437,6 +431,7 @@ public class MagineerMod implements
     // this adds "ModName:" before the ID of any card/relic/power etc.
     // in order to avoid conflicts if any other mod uses the same ID.
     public static String makeID(String idText) {
+        logger.info("making ID '" + getModID() + ":" + idText+"'");
         return getModID() + ":" + idText;
     }
 

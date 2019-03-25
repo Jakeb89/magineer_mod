@@ -1,19 +1,25 @@
 package magineer.cards;
 
 import basemod.abstracts.CustomCard;
-import com.badlogic.gdx.Gdx;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.cards.CardGroup;
+import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
-import com.megacrit.cardcrawl.vfx.combat.PlasmaOrbPassiveEffect;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import hexui_lib.HexUILib;
 import hexui_lib.interfaces.CustomCardPortrait;
 import hexui_lib.interfaces.CustomCardTypeLocation;
 import hexui_lib.interfaces.FlavorTooltips;
 import hexui_lib.util.*;
+import magineer.actions.DescriptiveAction;
+import magineer.util.LangUtil;
+import magineer.util.StarFoilEffect;
 import magineer.util.TextureLoader;
 
 import java.util.ArrayList;
 
 import static hexui_lib.util.RenderLayer.CM_FULL;
+import static magineer.characters.Magineer.logger;
 
 public abstract class MagineerCard extends CustomCard implements CustomCardPortrait, CustomCardTypeLocation, FlavorTooltips {
 
@@ -82,9 +88,23 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
 
     protected String flavorText = "-";
     protected ArrayList<String> artistNames = new ArrayList<String>();
-    protected boolean isFoil = false;
+    protected boolean isFoil = (Math.random()<0.2 ? true : false);
     protected Wobbler foilWobbler = new Wobbler(20f, 2, 1);
     protected float foilSparkleCountdown = 2f;
+
+    public boolean isStarFoil = isFoil;
+    public StarFoilEffect starFoilEffect = null;
+
+    public ArrayList<DescriptiveAction> actionList = new ArrayList<DescriptiveAction>();
+
+    public enum SLOTTYPE{
+        GRAY,
+        ORANGE,
+        BLUE
+    }
+
+    public ArrayList<SLOTTYPE> improvementSlots = new ArrayList<SLOTTYPE>();
+    public int improvements = 0;
 
     public void addImprovements(int amount) {
         addImprovements(amount, SLOTTYPE.GRAY);
@@ -127,6 +147,7 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
 
 
     public boolean couldBeImprovedBy(SLOTTYPE slotType) {
+        if(improvementSlots.size() == 0) return false;
         if(improvements < improvementSlots.size()) {
             SLOTTYPE fillingSlotType = improvementSlots.get(improvements);
             switch (fillingSlotType) {
@@ -152,21 +173,16 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
         //Do something if the lost level matters.
     }
 
-    public void actionCallback(AbstractCard returnCards) {
+    public void actionCallback(AbstractCard card) {
+    }
+
+    public void actionCallback(ArrayList<AbstractCard> cards) {
     }
 
     public boolean customCardTest(AbstractCard c) {
         return true;
     }
 
-    public enum SLOTTYPE{
-        GRAY,
-        ORANGE,
-        BLUE
-    }
-
-    public ArrayList<SLOTTYPE> improvementSlots = new ArrayList<SLOTTYPE>();
-    public int improvements = 0;
 
     public MagineerCard(final String id, final String name, final String img, final int cost, final String rawDescription,
                         final CardType type, final CardColor color,
@@ -344,6 +360,12 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
         return pair;
     }
 
+    protected void generateBetaArt(){
+        //logger.info(this.cardID+".generateBetaArt()");
+        cardArtLayers512 = BetaPortraitGenerator.generate(this.cardID, false);
+        cardArtLayers1024 = BetaPortraitGenerator.generate(this.cardID, true);
+    }
+
     public void addCardArtLayers512(ArrayList<RenderLayer> portraitLayers){
         for(RenderLayer layer : cardArtLayers512){
             portraitLayers.add(layer);
@@ -436,6 +458,7 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
         portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_rainbow))); //Thing to be masked
         portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_stars), null,
                 RenderLayer.BLENDMODE.SCREEN, new FloatPair(foilWobbler.get(0)*5, foilWobbler.get(1)*15)));
+
         portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_stars), null,
                 RenderLayer.BLENDMODE.SCREEN, new FloatPair(foilWobbler.get(0)*7, foilWobbler.get(1)*11)));
 
@@ -444,14 +467,30 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
         portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+effect_stars), null,
                 RenderLayer.BLENDMODE.SCREEN, new FloatPair(foilWobbler.get(0)*-5, foilWobbler.get(1)*-17)));
 
+
+        if(isStarFoil){
+            if(starFoilEffect == null){
+                starFoilEffect = new StarFoilEffect(10);
+            }
+            starFoilEffect.step();
+            portraitLayers.addAll(starFoilEffect.getImageLayers());
+        }
+
         portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+mask_crystallize), null,
                 RenderLayer.BLENDMODE.CREATEMASK, new FloatPair(foilWobbler.get(0)*11, foilWobbler.get(1)*-5), 0f, null)); //The mask itself
         portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(cardArt+getFoilArtFilename()), null,
                 RenderLayer.BLENDMODE.CREATEMASK, null, 0f, null)); //The mask itself
+
+
+
         portraitLayers.add(new RenderImageLayer(TextureLoader.getTexture(images+empty), null,
                 RenderLayer.BLENDMODE.RECEIVEMASK, null, 0f, null)); //Finally, do magic because reasons.
 
+
         portraitLayers.add(new RenderCommandLayer(RenderCommandLayer.COMMAND.FBO_END_DOUBLESCREEN));
+
+
+        //portraitLayers.add(new RenderCommandLayer(RenderCommandLayer.COMMAND.ATTEMPT_RESET));
     }
 
     public float rand(float min, float max){
@@ -469,4 +508,50 @@ public abstract class MagineerCard extends CustomCard implements CustomCardPortr
     public String getFoilArtFilename(){
         return "magineer_strike.png";
     }
+
+    public void updateDescription(){
+        String description = "";
+        for(DescriptiveAction action : actionList ){
+            if(description != ""){
+                description += " NL ";
+            }
+            description += action.getDescription();
+        }
+
+        //Some code here to check for description length being too long, in which case make use of the short descriptions.
+
+        rawDescription = description;
+        rawDescription = LangUtil.getDescriptionFromActionList(actionList);
+        initializeDescription();
+    }
+
+
+    // Actions the card should do.
+    @Override
+    public void use(AbstractPlayer p, AbstractMonster m) {
+        logger.info(this.getClass().getSimpleName()+".use(...)");
+        for(DescriptiveAction action : actionList){
+            logger.info("> Processing action: "+action.getClass().getSimpleName());
+            action.isDone = false;
+            action.setTarget(m);
+            AbstractDungeon.actionManager.addToBottom(action);
+        }
+    }
+
+    public void setRandomSlots(int slots, SLOTTYPE slottype){
+        improvementSlots.clear();
+        for(int i=0; i<slots; i++){
+            if(Math.random()*i*2 > slots){
+                improvementSlots.add(slottype);
+            }else {
+                improvementSlots.add(SLOTTYPE.GRAY);
+            }
+        }
+    }
+
+    public CardGroup getPlayerHand(){
+        if(AbstractDungeon.player == null) return null;
+        return AbstractDungeon.player.hand;
+    }
+
 }

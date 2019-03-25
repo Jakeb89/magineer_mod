@@ -1,20 +1,75 @@
 {
   "magineer:MagineerStrike": {
     "NAME": "Strike",
-    "DESCRIPTION": "Deal !D! Damage."
+    "DESCRIPTION": "-"
   },
   "magineer:MagineerDefend": {
     "NAME": "Defend",
-    "DESCRIPTION": "Gain !B! Block."
+    "DESCRIPTION": "-"
   },
   "magineer:Blueprint": {
     "NAME": "Blueprint",
-    "DESCRIPTION": "Placeholder text."
+    "DESCRIPTION": "-"
   },
   "magineer:Implement": {
     "NAME": "Implement",
-    "DESCRIPTION": "Placeholder text."
+    "DESCRIPTION": "-"
   },
+
+
+
+  "magineer:ImprovingStrike": {
+    "NAME": "Improving Strike",
+    "DESCRIPTION": "-"
+  },
+  "magineer:ImprovingDefend": {
+    "NAME": "Improving Defend",
+    "DESCRIPTION": "-"
+  },
+  "magineer:SummonCrystal": {
+    "NAME": "Summon Crystal",
+    "DESCRIPTION": "-"
+  },
+  "magineer:SummonAegis": {
+    "NAME": "Summon Aegis",
+    "DESCRIPTION": "-"
+  },
+
+
+
+
+
+  "magineer:UncommonAttack": {
+    "NAME": "UncommonAttack",
+    "DESCRIPTION": "-"
+  },
+  "magineer:UncommonSkill": {
+    "NAME": "UncommonSkill",
+    "DESCRIPTION": "-"
+  },
+  "magineer:UncommonPower": {
+    "NAME": "UncommonPower",
+    "DESCRIPTION": "-"
+  },
+
+  "magineer:RareAttack": {
+    "NAME": "RareAttack",
+    "DESCRIPTION": "-"
+  },
+
+  "magineer:RareSkill": {
+    "NAME": "RareSkill",
+    "DESCRIPTION": "-"
+  },
+
+  "magineer:RarePower": {
+    "NAME": "RarePower",
+    "DESCRIPTION": "-"
+  },
+
+
+
+
   "magineer:DefaultCommonPower": {
     "NAME": "Hold Place",
     "DESCRIPTION": "Gain !M! Keyword.",

@@ -1,18 +1,11 @@
 package magineer.cards;
 
-import basemod.helpers.BaseModCardTags;
-import com.megacrit.cardcrawl.actions.common.GainBlockAction;
-import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.core.CardCrawlGame;
-import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.localization.CardStrings;
-import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import hexui_lib.util.RenderImageLayer;
-import hexui_lib.util.RenderLayer;
 import magineer.MagineerMod;
-import magineer.actions.ImproveCardAction;
-import magineer.actions.ImproveRandomCardAction;
+import magineer.actions.*;
 import magineer.characters.Magineer;
+import magineer.util.LocalStringGetter;
 import magineer.util.TextureLoader;
 
 import static magineer.MagineerMod.makeCardPath;
@@ -22,12 +15,12 @@ public class Blueprint extends MagineerCard {
     // chooseDesc DECLARATION
 
     public static final String ID = MagineerMod.makeID("Blueprint");
-    private static final CardStrings cardStrings = CardCrawlGame.languagePack.getCardStrings(ID);
+    private static final CardStrings cardStrings = LocalStringGetter.getCardStrings(ID);
 
     public static final String IMG = makeCardPath("Skill.png");
 
-    public static final String NAME = "Blueprint"; //cardStrings.NAME;
-    public static final String DESCRIPTION = "Gain !B! Block. NL Add !M! magineer:Progress to a random card in your hand."; //cardStrings.DESCRIPTION;
+    public static final String NAME = cardStrings.NAME;
+    public static final String DESCRIPTION = cardStrings.DESCRIPTION;
     public static final String portraitFilename = "blueprint.png";
 
     // /chooseDesc DECLARATION/
@@ -59,12 +52,11 @@ public class Blueprint extends MagineerCard {
 
         cardArtLayers512.add(new RenderImageLayer(TextureLoader.getTexture(cardArt512+portraitFilename)));
         cardArtLayers1024.add(new RenderImageLayer(TextureLoader.getTexture(cardArt1024+portraitFilename)));
-    }
 
-    @Override
-    public void use(AbstractPlayer p, AbstractMonster m) {
-        AbstractDungeon.actionManager.addToBottom(new GainBlockAction(p, p, block));
-        AbstractDungeon.actionManager.addToBottom(new ImproveRandomCardAction(p.hand, 1, this.magicNumber, SLOTTYPE.BLUE));
+        actionList.add(new BlockDescAction(this));
+        actionList.add(new ImproveRandomCardDescAction(this, getPlayerHand(), 1, MagineerCard.SLOTTYPE.ORANGE, 2));
+
+        updateDescription();
     }
 
     @Override
@@ -73,7 +65,7 @@ public class Blueprint extends MagineerCard {
             upgradeName();
             upgradeBlock(UPGRADE_PLUS_BLOCK);
             upgradeMagicNumber(UPGRADE_PLUS_MAGIC);
-            initializeDescription();
+            updateDescription();
         }
     }
 

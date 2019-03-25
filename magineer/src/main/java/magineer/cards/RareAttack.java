@@ -1,12 +1,12 @@
 package magineer.cards;
 
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.localization.CardStrings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import hexui_lib.util.RenderImageLayer;
 import magineer.MagineerMod;
 import magineer.characters.Magineer;
+import magineer.util.LocalStringGetter;
 import magineer.util.TextureLoader;
 
 import static magineer.MagineerMod.makeCardPath;
@@ -16,11 +16,11 @@ public class RareAttack extends MagineerCard {
     // chooseDesc DECLARATION
 
     public static final String ID = MagineerMod.makeID("RareAttack");
-    private static final CardStrings cardStrings = CardCrawlGame.languagePack.getCardStrings(ID);
+    private static final CardStrings cardStrings = LocalStringGetter.getCardStrings(ID);
 
     public static final String IMG = makeCardPath("Attack.png");
 
-    public static final String NAME = "Rare Attack"; //cardStrings.NAME;
+    public static final String NAME = cardStrings.NAME;
     public static final String DESCRIPTION = "-"; //cardStrings.DESCRIPTION;
     public static final String portraitFilename = "default.png";
 
@@ -61,7 +61,7 @@ public class RareAttack extends MagineerCard {
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
         //AbstractDungeon.actionManager.addToBottom(new GainBlockAction(p, p, block));
-        //AbstractDungeon.actionManager.addToBottom(new ImproveRandomCardAction(p.hand, 1, this.magicNumber, SLOTTYPE.BLUE));
+        //AbstractDungeon.actionManager.addToBottom(new ImproveRandomCardDescAction(p.hand, 1, this.magicNumber, SLOTTYPE.BLUE));
     }
 
     @Override

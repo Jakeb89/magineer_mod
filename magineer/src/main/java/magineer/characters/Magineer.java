@@ -19,7 +19,10 @@ import com.megacrit.cardcrawl.helpers.ScreenShake;
 import com.megacrit.cardcrawl.localization.CharacterStrings;
 import com.megacrit.cardcrawl.screens.CharSelectInfo;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
+import kobting.friendlyminions.characters.AbstractPlayerWithMinions;
+import kobting.friendlyminions.characters.CustomCharSelectInfo;
 import magineer.MagineerMod;
+import magineer.util.CardList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import magineer.cards.*;
@@ -38,6 +41,11 @@ import static magineer.characters.Magineer.Enums.COLOR_GRAY;
 
 public class Magineer extends CustomPlayer {
     public static final Logger logger = LogManager.getLogger(MagineerMod.class.getName());
+
+    /*@Override
+    public CustomCharSelectInfo getInfo() {
+        return (CustomCharSelectInfo) getLoadout ();
+    }*/
 
     // =============== CHARACTER ENUMERATORS =================
     // These are enums for your Characters color (both general color and for the card library) as well as
@@ -150,48 +158,42 @@ public class Magineer extends CustomPlayer {
     // Starting description and loadout
     @Override
     public CharSelectInfo getLoadout() {
+
         return new CharSelectInfo(NAMES[0], TEXT[0],
                 STARTING_HP, MAX_HP, ORB_SLOTS, STARTING_GOLD, CARD_DRAW, this, getStartingRelics(),
                 getStartingDeck(), false);
+
+
+        /*
+        CharSelectInfo info = new CustomCharSelectInfo (NAMES[0], TEXT[0],
+                STARTING_HP, MAX_HP, ORB_SLOTS, 4, STARTING_GOLD, CARD_DRAW, this, getStartingRelics(),
+                getStartingDeck(), false);
+
+
+        CharSelectInfo info = new CustomCharSelectInfo (
+                "Yohane",
+                "",
+                60, //currentHP
+                60, //maxHP
+                0,  //maxOrbs
+                2,  //maxMinions
+                99, //gold
+                5,  //cardDraw
+                this,
+                getStartingRelics(),
+                getStartingDeck(),
+                false);
+                */
+        //return info;
     }
 
     // Starting Deck
     @Override
     public ArrayList<String> getStartingDeck() {
-        ArrayList<String> retVal = new ArrayList<>();
 
         logger.info("Begin loading starter Deck Strings");
 
-        retVal.add(MagineerStrike.ID);
-        retVal.add(MagineerStrike.ID);
-        retVal.add(MagineerStrike.ID);
-        retVal.add(MagineerStrike.ID);
-        retVal.add(MagineerStrike.ID);
-
-        retVal.add(MagineerDefend.ID);
-        retVal.add(MagineerDefend.ID);
-        retVal.add(MagineerDefend.ID);
-        retVal.add(MagineerDefend.ID);
-
-        retVal.add(Blueprint.ID);
-        retVal.add(Implement.ID);
-
-        /*
-        retVal.add(DefaultUncommonAttack.ID);
-        retVal.add(DefaultRareAttack.ID);
-
-        retVal.add(DefaultUncommonSkill.ID);
-        retVal.add(DefaultRareSkill.ID);
-
-        retVal.add(DefaultCommonPower.ID);
-        retVal.add(DefaultUncommonPower.ID);
-        retVal.add(DefaultRarePower.ID);
-
-        retVal.add(DefaultAttackWithVariable.ID);
-        retVal.add(DefaultSecondMagicNumberSkill.ID);
-        retVal.add(OrbSkill.ID);
-        */
-        return retVal;
+        return CardList.getStartingDeck();
     }
 
     // Starting Relics	

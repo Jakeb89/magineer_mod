@@ -1,15 +1,11 @@
 package magineer.cards;
 
-import com.megacrit.cardcrawl.actions.common.GainBlockAction;
-import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.core.CardCrawlGame;
-import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.localization.CardStrings;
-import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import hexui_lib.util.RenderImageLayer;
 import magineer.MagineerMod;
-import magineer.actions.ImproveRandomCardAction;
+import magineer.actions.*;
 import magineer.characters.Magineer;
+import magineer.util.LocalStringGetter;
 import magineer.util.TextureLoader;
 
 import static magineer.MagineerMod.makeCardPath;
@@ -19,11 +15,11 @@ public class UncommonAttack extends MagineerCard {
     // chooseDesc DECLARATION
 
     public static final String ID = MagineerMod.makeID("UncommonAttack");
-    private static final CardStrings cardStrings = CardCrawlGame.languagePack.getCardStrings(ID);
+    private static final CardStrings cardStrings = LocalStringGetter.getCardStrings(ID);
 
     public static final String IMG = makeCardPath("Attack.png");
 
-    public static final String NAME = "Uncommon Attack"; //cardStrings.NAME;
+    public static final String NAME = cardStrings.NAME;
     public static final String DESCRIPTION = "-"; //cardStrings.DESCRIPTION;
     public static final String portraitFilename = "default.png";
 
@@ -38,12 +34,12 @@ public class UncommonAttack extends MagineerCard {
     public static final CardColor COLOR = Magineer.Enums.COLOR_GRAY;
 
     private static final int COST = 1;
-    private static final int DAMAGE = 4;
-    private static final int UPGRADE_PLUS_DAMAGE = 2;
-    private static final int BLOCK = 4;
-    private static final int UPGRADE_PLUS_BLOCK = 2;
-    private static final int MAGIC = 2;
-    private static final int UPGRADE_PLUS_MAGIC = 2;
+    private static final int DAMAGE = 8;
+    private static final int UPGRADE_PLUS_DAMAGE = 4;
+    private static final int BLOCK = 0;
+    private static final int UPGRADE_PLUS_BLOCK = 0;
+    private static final int MAGIC = 0;
+    private static final int UPGRADE_PLUS_MAGIC = 0;
 
 
     // /STAT DECLARATION/
@@ -59,12 +55,14 @@ public class UncommonAttack extends MagineerCard {
 
         cardArtLayers512.add(new RenderImageLayer(TextureLoader.getTexture(cardArt512+portraitFilename)));
         cardArtLayers1024.add(new RenderImageLayer(TextureLoader.getTexture(cardArt1024+portraitFilename)));
-    }
 
-    @Override
-    public void use(AbstractPlayer p, AbstractMonster m) {
-        //AbstractDungeon.actionManager.addToBottom(new GainBlockAction(p, p, block));
-        //AbstractDungeon.actionManager.addToBottom(new ImproveRandomCardAction(p.hand, 1, this.magicNumber, SLOTTYPE.BLUE));
+        setRandomSlots(5, SLOTTYPE.BLUE);
+
+        actionList.add(new ImprovingDamageDescAction(this));
+        actionList.add(new DamageDescAction(this));
+        actionList.add(new SelfImprovingDescAction(this));
+
+        updateDescription();
     }
 
     @Override
@@ -76,6 +74,16 @@ public class UncommonAttack extends MagineerCard {
             upgradeMagicNumber(UPGRADE_PLUS_MAGIC);
             initializeDescription();
         }
+    }
+
+    @Override
+    public void gainedImprovementLevel(int level){
+        upgradeDamage(2);
+    }
+
+    @Override
+    public void lostImprovementLevel(int level){
+        upgradeDamage(-2);
     }
 
     @Override

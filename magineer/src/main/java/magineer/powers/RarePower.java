@@ -11,7 +11,7 @@ import com.megacrit.cardcrawl.localization.PowerStrings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.powers.AbstractPower;
 import magineer.MagineerMod;
-import magineer.cards.DefaultRareAttack;
+import magineer.cards.defaultCards.DefaultRareAttack;
 import magineer.util.TextureLoader;
 
 public class RarePower extends AbstractPower {

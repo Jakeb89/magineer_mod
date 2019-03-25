@@ -7,5 +7,80 @@
       " cards.",
       "NL #yEvoke: Deal #b damage to all enemies."
     ]
+  },
+
+
+
+
+  "magineer:DamageDescAction": {
+    "DESCRIPTION": [
+      "Deal !D! damage."
+    ]
+  },
+  "magineer:BlockDescAction": {
+    "DESCRIPTION": [
+      "Gain !B! Block."
+    ]
+  },
+  "magineer:ImplementDescAction": {
+    "DESCRIPTION": [
+      "Upgrade !M! card in your hand. It loses all magineer:Improvement.",
+      "Upgrade !M! cards in your hand. They lose all magineer:Improvement."
+    ]
+  },
+  "magineer:SelfImprovingDescAction": {
+    "DESCRIPTION": [
+      "magineer:Self-Improving."
+    ]
+  },
+  "magineer:ImproveRandomCardDescAction": {
+    "DESCRIPTION": [
+      "Add !M! magineer:Progress to ",
+      "Add !M! magineer:Insight to ",
+      "Add !M! magineer:Improvement to ",
+      "a random card in your hand.",
+      " random cards in your hand."
+    ]
+  },
+  "magineer:ImprovingDamageDescAction": {
+    "DESCRIPTION": [
+      "magineer:Improving_Damage !X! (Damage is improved by !X! for each improvement slot filled.)",
+      "magineer:Improving_Damage !X!."
+    ]
+  },
+  "magineer:ImprovingBlockDescAction": {
+    "DESCRIPTION": [
+      "magineer:Improving_Block !X! (Block is improved by !X! for each improvement slot filled.)",
+      "magineer:Improving_Block !X!."
+    ]
+  },
+  "magineer:ImprovingMagicDescAction": {
+    "DESCRIPTION": [
+      "magineer:Improving_Magic !X! (Magic is improved by !X! for each improvement slot filled.)",
+      "magineer:Improving_Magic !X!."
+    ]
+  },
+  "magineer:UpgradeCardsInGroupDescAction": {
+    "DESCRIPTION": [
+      "Upgrade ",
+      " a card in ",
+      " !X! cards in ",
+      "your hand.",
+      "your draw pile.",
+      "your discard pile.",
+      "your exhaust pile.",
+      "."
+    ]
+  },
+  "magineer:ChooseCardsFromGroupDescAction": {
+    "DESCRIPTION": [
+      "-"
+    ]
+  },
+  "magineer:SummonMinionDescAction": {
+    "DESCRIPTION": [
+      "Summon 1 !Y!.",
+      "Summon !X! !Y!s."
+    ]
   }
 }

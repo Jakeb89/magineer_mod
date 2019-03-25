@@ -7,6 +7,33 @@
     "DESCRIPTION": "Attempts to improve itself after being played. This can only fill gray improvement slots."
   },
   {
+    "PROPER_NAME": "Improving Damage",
+    "NAMES": [
+      "Improving Damage",
+      "improving damage",
+      "improving_damage"
+    ],
+    "DESCRIPTION": "Damage is increased by the given amount for each improvement slot filled."
+  },
+  {
+    "PROPER_NAME": "Improving Block",
+    "NAMES": [
+      "Improving Block",
+      "improving block",
+      "improving_block"
+    ],
+    "DESCRIPTION": "Block is increased by the given amount for each improvement slot filled."
+  },
+  {
+    "PROPER_NAME": "Improving Magic",
+    "NAMES": [
+      "Improving Magic",
+      "improving magic",
+      "improving_magic"
+    ],
+    "DESCRIPTION": "Magic number is increased by the given amount for each improvement slot filled."
+  },
+  {
     "PROPER_NAME": "Improvement",
     "NAMES": [
       "improvement",

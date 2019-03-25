@@ -1,0 +1,8 @@
+{
+  "magineer:DamageDescAction": {
+    "NAME": "Strike",
+    "DESCRIPTION": [
+      "Deal !D! damage."
+    ]
+  }
+}

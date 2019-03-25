@@ -3,7 +3,7 @@
     <groupId>magineermod</groupId>
     <artifactId>MagineerMod</artifactId>
     <!--<version>1.2.0</version>-->
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <name>MagineerMod</name>
 
     <properties>
@@ -55,6 +55,14 @@
             <version>0.0.1</version>
             <scope>system</scope>
             <systemPath>C:/Users/jakeb/Documents/my_mods/hexui_lib/hexui_lib/target/HexUILib.jar</systemPath>
+            <!--<systemPath>${basedir}/../lib/StSLib.jar</systemPath>-->
+        </dependency>
+        <dependency>
+            <groupId>stsfriendlyminions</groupId>
+            <artifactId>STSFriendlyMinions</artifactId>
+            <version>0.1.2</version>
+            <scope>system</scope>
+            <systemPath>${Steam.path}/workshop/content/646570/1612426481/FriendlyMinions.jar</systemPath>
             <!--<systemPath>${basedir}/../lib/StSLib.jar</systemPath>-->
         </dependency>
     </dependencies>
